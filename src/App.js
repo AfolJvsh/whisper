@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from './pages/Login';
+import Registration from './pages/Registration';
+import Homepage from './pages/Homepage';
+import "./style.scss";
+import { useContext } from 'react';
+import { AuthContext } from './Context/Authcontext';
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import Postpage from './pages/Postpage';
+import {AnimatePresence} from "framer-motion";
+
+
 
 function App() {
+  const { currentUser } = useContext(AuthContext);
+  const ProtectedRoute = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
+  const location = useLocation();
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimatePresence>
+    <Routes location={location} key={location.pathname}>
+      <Route path="post" element = {<ProtectedRoute><Homepage /></ProtectedRoute>} />
+      <Route path="/" element = {<ProtectedRoute><Postpage/></ProtectedRoute>} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registration" element={<Registration />} />
+    </Routes>
+    </AnimatePresence>
   );
 }
 
