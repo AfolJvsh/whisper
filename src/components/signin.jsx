@@ -28,7 +28,7 @@ exit={{
        <img src={Partnership} alt='' style={{height:"175px", fontWeight:"bold"}}/>
       <h2>Welcome Back!</h2>
       <span>Enter your personal details to use all of the site's features</span>
-     <Link to="/login"><button>Sign In</button></Link> 
+  <Link to="/login" className='button'>Sign In</Link>
     </div>
   </motion.div>
   )

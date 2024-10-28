@@ -1,11 +1,9 @@
 *{
     scroll-behavior: smooth;
-
 }
 body{ font-family: Arial, sans-serif;
     margin: 0;
     position: relative;
-
 background: linear-gradient(45deg, rgb(227, 235, 168), rgb(209, 216, 149), rgb(158, 165, 107));
 
     #logoutBtn{
@@ -22,37 +20,11 @@ background: linear-gradient(45deg, rgb(227, 235, 168), rgb(209, 216, 149), rgb(1
         cursor: pointer;
     }
     }
-//  
-// .lite{
-//     font-size: 40px;
-//     display:flex;
-//         justify-content: space-around;
-//         .anim{
-//             border-bottom:2px solid black;
-//             width:70px;
-//             border-radius:50px;
-//             margin-bottom:20px;
-//             transform: scaleX(0);
-//             animation: scaleXAnimation 5s ease-out infinite;
-//         }
-//         @keyframes scaleXAnimation{
-//             0%{
-//                 transform:scaleX(0);
-//             }
-//             50%{
-//                 transform:scaleX(1);
-//                 transform-origin: bottom-left;
-//             }
-//             100%{
-//                 transform:scaleX(0);
-//             }
-//         }        
-//     }
 
 fieldset{
     display: flex;
     flex-direction:row; 
-    height:85vh;
+    height:85dvh;
     margin-top:20px;
     background-color:#d2db90;
     overflow:hidden;
@@ -83,7 +55,7 @@ fieldset{
         padding:0px 5px;
         box-shadow: 0 0 0 10px #19485f;
         overflow:hidden;
-        button{
+        .button{
             padding: 10px 30px;
             background-color:#333;
             color:#d2db90;
@@ -91,6 +63,7 @@ fieldset{
             outline:none;
             border:transparent;
             margin-top: 30px;
+            text-decoration: none;
             &:hover{
                 cursor: pointer;
             }
@@ -103,7 +76,7 @@ fieldset{
         flex:1;
         height: 100%;
         justify-content: center;
-        width: 100%;
+        // width: 100%;
         align-items: center;
 
         .righta{
@@ -113,7 +86,7 @@ fieldset{
             justify-content: center;
             align-items: center;
             gap:20px;
-            width:100%;
+            // width:100%;
             h2{
               margin-top:100px;
             }
@@ -139,6 +112,7 @@ fieldset{
                     background-color: #fdf1f5;
                     height:25px;
                     border-radius:5px;
+                    box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.5);
                     &::placeholder{
                         color:#19485f
                     }
@@ -270,7 +244,7 @@ fieldset{
     padding: 20px;
     overflow: hidden;
     border-radius: 5px;
-    height: 85vh;
+    height: 85dvh;
     display: flex;
     flex-direction: row;
     background-color:#d2db90;
@@ -413,7 +387,7 @@ button {
                 background: #19485f;
                 border-radius: 5px;
                 position:sticky;
-                height:92vh;
+                height:92dvh;
                 flex:0.45;
                 top:0; 
             
@@ -499,7 +473,7 @@ button {
         // background-color: #19485f;
         overflow:hidden;
         .lob{
-            height:80vh;
+            height:80dvh;
             position:relative;
             span{
                 position:absolute;
@@ -531,7 +505,7 @@ button {
 }
     }
     img{
-        max-height: 80vh;
+        max-height: 80dvh;
         width:90%;
        object-fit: contain;
        background-color: black;
@@ -544,3 +518,229 @@ button {
         }
     }
 }
+/* Mobile and Tablet Styles */
+@media (max-width: 768px) {
+    /* Tablet */
+    fieldset {
+      flex-direction: column;
+      height: auto;
+      margin: 20px;
+    }
+  
+    .left-r, .right-r {
+      flex: 1;
+      height: auto;
+      width: 100%;
+      .lefta, .righta {
+        width: 100%;
+        padding: 10px;
+        box-shadow: none;
+        border-radius: 0;
+      }
+    }
+  
+    form {
+      flex-direction: column;
+      max-width: 100%;
+      height: auto;
+      padding: 15px;
+    }
+  
+    .scroll {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 60dvh;
+    }
+  
+    .scroller {
+      grid-template-rows: 1fr;
+    }
+  
+    .post-item {
+      flex-direction: column;
+      width: 100%;
+      padding: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* Mobile */
+ 
+    body {
+      
+      
+        //   #logoutBtn {
+        //     padding: 5px 15px;
+        //     right: 5px;
+        //   }
+        
+     
+          h2 {
+            font-size: 24px;
+          }
+        
+       fieldset {
+             margin:20px;
+             margin-top:30px;
+          height:auto;
+            flex-direction: column;
+            
+            .left-r{
+                
+                .lefta{
+                   border-radius:0;
+                display:flex;
+                flex-direction: row;
+                justify-content: space-between;
+              position: relative;
+                h2{
+                    font-size:large;
+                    position: absolute;
+                    top:10px;
+                    left:220px;
+                }
+              span{
+                font-size: smaller;
+                position: absolute;
+                width:50%;
+                left:190px;
+              }
+              .button{
+            position:absolute;
+            left:240px;
+            bottom:10px;
+              }
+                }
+            }
+            .right-r{
+                display: flex;
+                justify-content:space-between;
+                width: 100%; 
+               
+          
+                    
+                .righta{
+                    width: 100%;
+                   flex:none;
+                   form{
+                            h2{
+                              margin-top:0px;
+                              width: max-content;
+                              font-size: large;
+                            }
+                            span{
+                               width: max-content;
+                            }
+                            
+                        align-self: start;
+                        gap:15px;
+                        overflow:visible;
+                        width:100%;
+
+                            input{
+                            width:350px;
+                                &::placeholder{
+                                    color:#19485f
+                                }
+                            }
+                            button{
+                               width:max-content;
+                               height:30px;
+                               margin-left:150px;
+                            &:hover {
+                                cursor: pointer;
+                            }
+                            }
+                        }
+                    }
+            }
+            
+               
+                .left{
+                   
+            
+                    .left-a{
+                     
+                        h2{
+                          margin-top:100px;
+                        }
+                        
+                        
+                        form{
+                            h2{
+                            margin-top:0px;
+                            width: max-content;
+                            font-size: large;
+                          }
+                          span{
+                             width: max-content;
+                          }
+                            input{
+                        
+                                &::placeholder{
+                                    color:#19485f
+                                }
+                            }
+                            button{
+                    
+                            &:hover {
+                                cursor: pointer;
+                            }
+                            }
+                        }
+                    }
+                }
+                .right{
+                    
+                
+                    .right-a{
+                       
+                        
+                       
+                        button{
+                            width:max-content;
+                            height:30px;
+                            margin-left:150px;
+                            &:hover{
+                                cursor: pointer;
+                            }
+                        }
+                    }}}
+            
+        
+          form {
+            padding: 10px;
+            box-shadow: none;
+            background-color: transparent;
+          }
+        
+          .scroll {
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 50dvh;
+          }
+        
+          .post-container, .container-fluid {
+            width: 100%;
+            padding: 0;
+          }
+        
+          .post-item {
+            margin: 5px;
+            padding: 10px;
+            width: 100%;
+            flex-direction: column;
+          }
+        
+          .scroller {
+            grid-template-rows: 1fr;
+          }
+        
+          input, textarea, select, button {
+            width: 100%;
+            font-size: 14px;
+          }
+        }
+    }
+ 
