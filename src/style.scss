@@ -569,7 +569,7 @@ button {
  
     body {
       
-      
+      overscroll-behavior: none;
         //   #logoutBtn {
         //     padding: 5px 15px;
         //     right: 5px;
@@ -581,13 +581,15 @@ button {
           }
         
        fieldset {
-             margin:20px;
-             margin-top:30px;
-          height:auto;
+        overscroll-behavior: none;
+             margin:0;
+          height:100dvh;
+          width: 100dvw;
             flex-direction: column;
+            border-radius: 0;
             
             .left-r{
-                
+                border-radius: 0;
                 .lefta{
                    border-radius:0;
                 display:flex;
@@ -595,21 +597,22 @@ button {
                 justify-content: space-between;
               position: relative;
                 h2{
-                    font-size:large;
+                    font-size:25px;
                     position: absolute;
-                    top:10px;
-                    left:220px;
+                    top:40px;
+                    left:250px;
                 }
               span{
-                font-size: smaller;
+                font-size: 15px;
                 position: absolute;
                 width:50%;
-                left:190px;
+                left:220px;
+                text-align: center;
               }
               .button{
             position:absolute;
-            left:240px;
-            bottom:10px;
+            left:280px;
+            bottom:50px;
               }
                 }
             }
