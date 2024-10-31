@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import Scroll from "../components/Scroll";
 import Gossip from "../Images/gossip.png";
-
+import { AuthContext } from '../Context/Authcontext';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faFile } from '@fortawesome/free-solid-svg-icons';
 
@@ -16,7 +16,9 @@ const Form = () => {
   const [img, setImg] = useState(null);
   const [submittedData, setSubmittedData] = useState(null);
   const [submitting, setSubmitting] =useState(false);
-  // const [disabled, setDisabled] 
+    const {currentuser} = useContext(AuthContext);
+  
+   
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +43,7 @@ const Form = () => {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             const postRef = doc(collection(db, 'post'));
             const postId = postRef.id;
-
+            const uniqueId = currentuser.id;
             // Form data to be stored in Firestore and shown in FormDetails
             const newFormData = {
               uid: postId,
@@ -49,7 +51,9 @@ const Form = () => {
               category,
               description,
               imgUrl: downloadURL,
+              uniqueId,
               createdAt: Date.now(),
+          
             };
             await setDoc(postRef, newFormData);
     

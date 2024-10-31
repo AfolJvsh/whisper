@@ -4,6 +4,7 @@ import { db } from '../firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Secret from "../Images/secret.png";
+import Like from './Like';
 const Posts = ({category}) => {
   const [posts, setPosts] = useState([]);
 
@@ -67,8 +68,9 @@ const Posts = ({category}) => {
                 </div>
               </div>
               <div className="lone">
-              <span style={{margin:"10px"}}>{post.reportedBy}<img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> {post.description}</span>
-              </div>
+                
+              <span style={{margin:"10px"}}>{post.reportedBy}<img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> {post.description} <Like/></span>
+            </div>
             </div>
           ))
         ) : (

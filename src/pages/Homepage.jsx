@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Form  from '../components/form';
 import {motion} from "framer-motion"
 
