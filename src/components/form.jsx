@@ -1,12 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import Scroll from "../components/Scroll";
 import Gossip from "../Images/gossip.png";
-import { AuthContext } from '../Context/Authcontext';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faFile } from '@fortawesome/free-solid-svg-icons';
 
 
 const Form = () => {
@@ -15,10 +12,10 @@ const Form = () => {
   const [description, setDescription] = useState('');
   const [img, setImg] = useState(null);
   const [submittedData, setSubmittedData] = useState(null);
-  const [submitting, setSubmitting] =useState(false);
-    const {currentuser} = useContext(AuthContext);
-  
-   
+  const [submitting, setSubmitting] = useState(false);
+
+ 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,59 +24,71 @@ const Form = () => {
       return;
     }
 
+    setSubmitting(true);
+
     try {
       const storageRef = ref(storage, `images/${img.name}`);
       const uploadTask = uploadBytesResumable(storageRef, img);
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => {}, // Optional progress handling
         (error) => {
           console.error('Error during file upload:', error);
+          setSubmitting(false);
         },
         async () => {
           try {
-            setSubmitting(true)
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             const postRef = doc(collection(db, 'post'));
             const postId = postRef.id;
-            const uniqueId = currentuser.id;
-            // Form data to be stored in Firestore and shown in FormDetails
+
+            // Data for the post document
             const newFormData = {
               uid: postId,
               reportedBy,
               category,
               description,
               imgUrl: downloadURL,
-              uniqueId,
               createdAt: Date.now(),
-          
             };
+
+            // Create the post document
             await setDoc(postRef, newFormData);
-    
-                console.log('Post submitted successfully!')
-                setSubmittedData(newFormData);
-                setReportedBy('');
-                setDescription('');
-                setCategory('');
-                setImg(null);
+
+            // Create the like counter with an initial value of 0
+            const likeRef = doc(db, 'likes', postId);
+            const likeData = {
+              count: 0,
+              postId: postId,
+            };
+            await setDoc(likeRef, likeData);
+
+            console.log('Post and like counter submitted successfully!');
+            setSubmittedData(newFormData);
+            setReportedBy('');
+            setDescription('');
+            setCategory('');
+            setImg(null);
           } catch (error) {
             console.error('Error submitting post:', error);
-          }
-          finally{
-            setSubmitting(false)
+          } finally {
+            setSubmitting(false);
           }
         }
       );
     } catch (error) {
       console.error('Error submitting post:', error);
+      setSubmitting(false);
     }
   };
 
   return (
     <div id="posting" className="container-fluid">
       <div>
-        <h1 style={{marginBottom:"5px"}}>Post your Whispers<img src={Gossip} style={{height:"30px"}} alt=''/></h1>
+        <h1 style={{ marginBottom: "5px" }}>
+          Post your Whispers<img src={Gossip} style={{ height: "30px" }} alt='' />
+        </h1>
         <form onSubmit={handleSubmit}>
           <div className="one">
             <label htmlFor="reportedBy">Whisperer's Name:</label>
@@ -93,7 +102,7 @@ const Form = () => {
               value={reportedBy}
             />
 
-            <label htmlFor="category"> Pick Your Gossip:</label>
+            <label htmlFor="category">Pick Your Gossip:</label>
             <select
               id="category"
               name="category"
@@ -102,18 +111,19 @@ const Form = () => {
               value={category}
             >
               <option value="">Select Type</option>
-              <option value="Mystery Rumors" title='Unverified But Intriguing Stories.'>Mystery Rumors</option>
-              <option value="Celebrity Scoop" title='Latest Rumors About Famous People.'>Celebrity Scoop</option>
-              <option value="Workplace Whispers" title='Office drama and juicy work-related stories.'>Workplace Whispers</option>
-              <option value="Relationship Rumors" title='Love triangles, breakups, and hookups.'>Relationship Rumors</option>
-              <option value="Neighborhood News" title='Local scandals and community secrets.'>Neighborhood News</option>
-              <option value="Family Feuds" title='Family drama and disputes.'>Family Feuds</option>
-              <option value="School Secrets" title='High school or college gossip.'>School Secrets</option>
-              <option value="Social Media Buzz" title='Trending online gossip and viral moments.'>Social Media Buzz</option>
-              <option value="Party Confessions" title='Wild stories from nights out.'>Party Confessions</option>
-              <option value="Friendship Fallout" title='Betrayals and secrets among friends.'>Friendship Fallout</option>
+              <option value="Mystery Rumors">Mystery Rumors</option>
+              <option value="Celebrity Scoop">Celebrity Scoop</option>
+              <option value="Workplace Whispers">Workplace Whispers</option>
+              <option value="Relationship Rumors">Relationship Rumors</option>
+              <option value="Neighborhood News">Neighborhood News</option>
+              <option value="Family Feuds">Family Feuds</option>
+              <option value="School Secrets">School Secrets</option>
+              <option value="Social Media Buzz">Social Media Buzz</option>
+              <option value="Party Confessions">Party Confessions</option>
+              <option value="Friendship Fallout">Friendship Fallout</option>
             </select>
-            <label htmlFor="description">The Story</label>
+
+            <label htmlFor="description">The Story:</label>
             <textarea
               id="description"
               name="description"
@@ -122,7 +132,7 @@ const Form = () => {
               value={description}
             ></textarea>
 
-            <label htmlFor="imgUrl">Post a Picture or Video</label>
+            <label htmlFor="imgUrl">Post a Picture or Video:</label>
             <input
               type="file"
               id="imgUrl"
@@ -130,7 +140,10 @@ const Form = () => {
               required
               onChange={(e) => setImg(e.target.files[0])}
             />
-            <button type="submit" id="submitBtn" onClick={()=>setSubmitting(!submitting)}>{submitting?"Submitting":"Create Post"}</button>
+
+            <button type="submit" id="submitBtn" disabled={submitting}>
+              {submitting ? "Submitting..." : "Create Post"}
+            </button>
           </div>
           <Scroll formData={submittedData} />
         </form>

@@ -9,7 +9,6 @@ import Postpage from './pages/Postpage';
 import {AnimatePresence} from "framer-motion";
 
 
-
 function App() {
   const { currentUser } = useContext(AuthContext);
   const ProtectedRoute = ({ children }) => {

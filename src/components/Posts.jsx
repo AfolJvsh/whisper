@@ -7,8 +7,6 @@ import Secret from "../Images/secret.png";
 import Like from './Like';
 const Posts = ({category}) => {
   const [posts, setPosts] = useState([]);
-
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -31,7 +29,6 @@ const Posts = ({category}) => {
           fetchedPosts.sort((a, b) => b.createdAt - a.createdAt);
           
           setPosts(fetchedPosts);
-          console.log("Fetched Posts:", fetchedPosts);
         } else {
           console.log("No matching documents found!");
         }
@@ -69,7 +66,7 @@ const Posts = ({category}) => {
               </div>
               <div className="lone">
                 
-              <span style={{margin:"10px"}}>{post.reportedBy}<img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> {post.description} <Like/></span>
+              <span style={{margin:"10px"}}>{post.reportedBy}<img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> {post.description} <Like postId={post.id}/></span>
             </div>
             </div>
           ))
