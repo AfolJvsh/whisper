@@ -5,6 +5,8 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import Signin from '../components/signin';
 import {motion} from "framer-motion"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const Registration = () => {
   const [err, setErr] = useState(false);
@@ -54,7 +56,13 @@ const Registration = () => {
       <div className="right-r">
         <div className="righta">
           <form onSubmit={handleSubmit}>
-            <h2>Create Your Whisper Account</h2>
+            <h2 style={{marginBottom:0, marginTop:0}}>Create Your Whisper Account</h2>
+            <div className="lite" style={{display:'grid', gridTemplateColumns:"auto auto auto auto", marginLeft:"40px"}}>
+            <a href="twitter.com" target="_blank" style={{textDecoration:"none", color:'black'}}><FontAwesomeIcon size='2x' icon={faTwitter}/></a>
+           <a href="facebook.com" target="_blank" style={{textDecoration:"none", color:'black'}}><FontAwesomeIcon size='2x' icon={faFacebook}/></a>
+           <a href="github.com" target="_blank" style={{textDecoration:"none", color:'black'}}><FontAwesomeIcon size='2x' icon={faGithub}/></a>
+           <a href="linkedin.com" target="_blank" style={{textDecoration:"none", color:'black'}}><FontAwesomeIcon size='2x' icon={faLinkedin}/></a>
+          </div>
             <span>or use your email for registration</span>
             <input id="name" name='name' type="text" required placeholder='Name' />
             <input id="remail" type="email" required placeholder='Email' />
