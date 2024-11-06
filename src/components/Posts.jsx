@@ -4,7 +4,7 @@ import { db } from '../firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Secret from "../Images/secret.png";
-import Like from './Like';
+import Like from '../components/Like';
 import { AuthContext } from '../Context/Authcontext';
 
 const Posts = ({ category }) => {
