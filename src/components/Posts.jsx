@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { collection, query, where, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Secret from "../Images/secret.png";
 import Like from './Like';
-const Posts = ({category}) => {
+import { AuthContext } from '../Context/Authcontext';
+
+const Posts = ({ category }) => {
   const [posts, setPosts] = useState([]);
+  const { currentUser } = useContext(AuthContext);
+  const userId = currentUser?.email;
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         let q;
-        if (category) {
-          // Filter by category if one is selected
+
+        if (category === userId) {
+          // If "userPosts" category is selected, fetch only the current user's posts
+          q = query(collection(db, 'post'), where("userId", "==", userId));
+        } else if (category) {
+          // If a specific category is selected, fetch posts for that category
           q = query(collection(db, 'post'), where('category', '==', category));
         } else {
-          // Default query if no category is selected
+          // Default: Fetch all posts
           q = query(collection(db, 'post'), where('uid', '!=', ''));
         }
 
@@ -26,11 +35,13 @@ const Posts = ({category}) => {
             id: doc.id,
             ...doc.data()
           }));
+          // Sort posts by creation date
           fetchedPosts.sort((a, b) => b.createdAt - a.createdAt);
           
           setPosts(fetchedPosts);
         } else {
           console.log("No matching documents found!");
+          setPosts([]); // Clear posts if no documents match
         }
       } catch (error) {
         console.error('Error fetching documents:', error);
@@ -38,11 +49,10 @@ const Posts = ({category}) => {
     };
 
     fetchPosts();
-  }, [category]);
+  }, [category, userId]);
 
   const handleDelete = async (postId) => {
     try {
-
       const docRef = doc(db, 'post', postId);
       await deleteDoc(docRef);
       console.log(`Document with ID ${postId} deleted successfully`);
@@ -50,33 +60,38 @@ const Posts = ({category}) => {
     } catch (error) {
       console.error('Error deleting document:', error);
     }
-  }
+  };
+
   return (
-    <>
-      <div className='post-container'>
-        {posts.length > 0 ? (
-          posts.map(post => (
-            <div key={post.id} className='post-item'>
-              <div className="opp">
-                <span style={{backgroundColor:"#19485f", overflow:"hidden", padding:"10px", borderRadius:"0px 60px 50px 0px", color:"#e7eeb1"}}>{post.category}</span>
-                <div className="lob">
-              <img src={post.imgUrl} alt=""/>
-                <button onClick={()=>handleDelete(post.id)}><FontAwesomeIcon size='2x' icon={faTrash} title='Delete'/></button>
-                </div>
+    <div className='post-container'>
+      {posts.length > 0 ? (
+        posts.map(post => (
+          <div key={post.id} className='post-item'>
+            <div className="opp">
+              <span style={{backgroundColor:"#19485f", overflow:"hidden", padding:"10px", borderRadius:"0px 60px 50px 0px", color:"#e7eeb1"}}>{post.category}</span>
+              <div className="lob">
+                <img src={post.imgUrl} alt=""/>
+                <button onClick={() => handleDelete(post.id)}>
+                  <FontAwesomeIcon size='2x' icon={faTrash} title='Delete'/>
+                </button>
               </div>
-              <div className="lone">
-                
-              <span style={{margin:"10px"}}>{post.reportedBy}<img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> {post.description} <Like postId={post.id}/></span>
             </div>
+            <div className="lone">
+              <span style={{margin:"10px", gap:"5px"}}>
+                {post.reportedBy}
+                <img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> 
+                {post.description} 
+                <Like postId={post.id}/>
+              </span>
             </div>
-          ))
-        ) : (
-          <div className="span">
-          <span>Loading posts...</span>
           </div>
-        )}
-      </div>
-    </>
+        ))
+      ) : (
+        <div className="span">
+          <span>Loading posts...</span>
+        </div>
+      )}
+    </div>
   );
 };
 

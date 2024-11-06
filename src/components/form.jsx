@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import Scroll from "../components/Scroll";
 import Gossip from "../Images/gossip.png";
-
+import { AuthContext } from '../Context/Authcontext';
 
 const Form = () => {
   const [reportedBy, setReportedBy] = useState('');
@@ -13,8 +13,8 @@ const Form = () => {
   const [img, setImg] = useState(null);
   const [submittedData, setSubmittedData] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-
- 
+  const {currentUser} = useContext(AuthContext);
+ const userId = currentUser.email;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,6 +51,7 @@ const Form = () => {
               description,
               imgUrl: downloadURL,
               createdAt: Date.now(),
+              userId,
             };
 
             // Create the post document
