@@ -6,7 +6,6 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Secret from "../Images/secret.png";
 import Like from '../components/Like';
 import { AuthContext } from '../Context/Authcontext';
-
 const Posts = ({ category }) => {
   const [posts, setPosts] = useState([]);
   const { currentUser } = useContext(AuthContext);
@@ -77,12 +76,12 @@ const Posts = ({ category }) => {
               </div>
             </div>
             <div className="lone">
-              <span style={{margin:"10px", gap:"5px"}}>
+              <div style={{margin:"10px", gap:"5px"}}>
                 {post.reportedBy}
                 <img src={Secret} alt='' style={{height:"20px", fontWeight:"bold"}}/> 
                 {post.description} 
                 <Like postId={post.id}/>
-              </span>
+              </div>
             </div>
           </div>
         ))
